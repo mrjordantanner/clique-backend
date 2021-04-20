@@ -1,20 +1,37 @@
+//https://github.com/davidzas/back-end-socketio/blob/master/server.js
+
+//#region [Lime]
 const express = require('express');
 const app = express();
-const http = require("http");
 const cors = require('cors');
-const indexRoute = require("./routes/route");
+const server = require('http').createServer(app);
 
-app.use(indexRoute);
+const port = process.env.PORT || 8080;
+
+var STATIC_CHANNELS = [{
+    name: 'General',
+    participants: 0,
+    id: 0,
+    sockets: []
+}, {
+    name: 'Private 1',
+    participants: 0,
+    id: 1,
+    sockets: []
+},
+{
+    name: 'Private 2',
+    participants: 0,
+    id: 2,
+    sockets: []
+}];
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const usersController = require('./controllers/users');
 app.use('/users', usersController);
-
-
-
-const server = http.createServer(app);
 
 const io = require('socket.io')(server, {
     cors: {
@@ -23,33 +40,58 @@ const io = require('socket.io')(server, {
     }
 });
 
-let interval;
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+})
 
-io.on("connection", (socket) => {
-  console.log("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  
-  interval = setInterval(() => getApiAndEmit(socket), 50);
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-    clearInterval(interval);
-  });
+server.listen(port, () => {
+    console.log(`server listening on *:${port}`);
 });
 
-const getApiAndEmit = socket => {
-  const response = new Date();
-  // Emitting a new message. Will be consumed by the client
-  socket.emit("FromAPI", response);
-};
+io.on('connection', (socket) => { 
+    socket.emit('connection', null);
+    socket.on('channel-join', id => {
+        STATIC_CHANNELS.forEach(c => {
+            if (c.id === id) {
+                if (c.sockets.indexOf(socket.id) == (-1)) {
+                    c.sockets.push(socket.id);
+                    c.participants++;
+                    io.emit('channel', c);
+                    console.log(`Joined ${c.name} channel.`);
+                }
+            } else {
+                let index = c.sockets.indexOf(socket.id);
+                if (index != (-1)) {
+                    c.sockets.splice(index, 1);
+                    c.participants--;
+                    io.emit('channel', c);
+                    console.log(`Left ${c.name} channel.`);
+                }
+            }
+        });
+        return id;
+    });
 
+    socket.on('send-message', message => {
+        io.emit('message', message);
+    });
 
-const port = process.env.PORT || 4001;
+    socket.on('disconnect', () => {
+        STATIC_CHANNELS.forEach(c => {
+            let index = c.sockets.indexOf(socket.id);
+            if (index != (-1)) {
+                c.sockets.splice(index, 1);
+                c.participants--;
+                io.emit('channel', c);
+            }
+        });
+    });
+});
 
-// app.listen(port, () => {
-// 	console.log(`app is listening on port ${port}`);
-// });
-
-server.listen(port, () => console.log(`Listening on port ${port}`));
+app.get('/getChannels', (req, res) => {
+    res.json({
+        channels: STATIC_CHANNELS
+    })
+});
+//#endregion

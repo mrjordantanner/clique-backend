@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Sign Up
-router.post('/signup', (req, res, next) => {
+router.post('/createaccount', (req, res, next) => {
 	bcrypt
 		.hash(req.body.password, 10)
 		.then((hash) => ({
@@ -27,7 +27,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 // Sign In
-router.post('/signin', (req, res, next) => {
+router.post('/login', (req, res, next) => {
 	User.findOne({ name: req.body.name })
 		.then((user) => createUserToken(req, user))
 		.then((token) => res.json({ token }))

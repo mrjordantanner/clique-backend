@@ -10,10 +10,10 @@ mongoose
 		useUnifiedTopology: true,
 	})
 	.then(() => {
-		console.log('connected.');
+		console.log('mongoose connected to db.');
 	})
 	.catch(() => {
-		console.log('connection failed!');
+		console.log('db connection failed!');
 	});
 
 // const DB_URL = mongodb+srv://caffeine-dreams:k6l3LXnOIc62moON@cluster0.0kym9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
