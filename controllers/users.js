@@ -14,7 +14,7 @@ router.get('/', (req, res, next) => {
 });
 
 // Sign Up
-router.post('/createaccount', (req, res, next) => {
+router.post('/create', (req, res, next) => {
 	bcrypt
 		.hash(req.body.password, 10)
 		.then((hash) => ({

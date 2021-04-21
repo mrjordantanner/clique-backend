@@ -1,5 +1,7 @@
 //https://github.com/davidzas/back-end-socketio/blob/master/server.js
 
+getCollection = require('./db/connection');
+
 //#region [Lime]
 const express = require('express');
 const app = express();
@@ -26,12 +28,18 @@ var STATIC_CHANNELS = [{
     sockets: []
 }];
 
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Controllers
 const usersController = require('./controllers/users');
 app.use('/users', usersController);
+const channelsController = require('./controllers/channels');
+app.use('/channels', channelsController);
+const messagesController = require('./controllers/messages');
+app.use('/messages', messagesController);
 
 const io = require('socket.io')(server, {
     cors: {
@@ -53,18 +61,18 @@ io.on('connection', (socket) => {
     socket.emit('connection', null);
     socket.on('channel-join', id => {
         STATIC_CHANNELS.forEach(c => {
-            if (c.id === id) {
-                if (c.sockets.indexOf(socket.id) == (-1)) {
-                    c.sockets.push(socket.id);
-                    c.participants++;
+            if (c._id === id) {
+                if (c.sockets.indexOf(socket._id) == (-1)) {
+                    c.sockets.push(socket._id);
+                    c.participants = c.sockets.length;
                     io.emit('channel', c);
                     console.log(`Joined ${c.name} channel.`);
                 }
             } else {
-                let index = c.sockets.indexOf(socket.id);
+                let index = c.sockets.indexOf(socket._id);
                 if (index != (-1)) {
                     c.sockets.splice(index, 1);
-                    c.participants--;
+                    c.participants = c.sockets.length;
                     io.emit('channel', c);
                     console.log(`Left ${c.name} channel.`);
                 }
@@ -74,24 +82,25 @@ io.on('connection', (socket) => {
     });
 
     socket.on('send-message', message => {
-        io.emit('message', message);
+
+       io.emit('message', message);
     });
 
     socket.on('disconnect', () => {
         STATIC_CHANNELS.forEach(c => {
-            let index = c.sockets.indexOf(socket.id);
+            let index = c.sockets.indexOf(socket._id);
             if (index != (-1)) {
                 c.sockets.splice(index, 1);
-                c.participants--;
+                c.participants = c.sockets.length;
                 io.emit('channel', c);
             }
         });
     });
 });
 
-app.get('/getChannels', (req, res) => {
-    res.json({
-        channels: STATIC_CHANNELS
-    })
-});
+// app.get('/getChannels', (req, res) => {
+//     res.json({
+//         channels: STATIC_CHANNELS
+//     })
+// });
 //#endregion

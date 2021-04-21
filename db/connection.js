@@ -1,8 +1,12 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const mongoURI =
 	process.env.NODE_ENV === 'production'
 		? process.env.DB_URL
 		: 'mongodb://localhost/chat-app';
+
+// const mongoURI = process.env.DB_URL;
+
 
 mongoose
 	.connect(mongoURI, {
@@ -15,6 +19,7 @@ mongoose
 	.catch(() => {
 		console.log('db connection failed!');
 	});
+
 
 // const DB_URL = mongodb+srv://caffeine-dreams:k6l3LXnOIc62moON@cluster0.0kym9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 module.exports = mongoose;
