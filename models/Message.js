@@ -9,6 +9,14 @@ const MessageSchema = new mongoose.Schema(
 		sender: {
 			type: String,
 			required: true,
+		},
+		channelId: {
+			type: String,
+			required: true,
+		},
+		socketId: {
+			type: String,
+			required: true,
 		}
 	},
 	{

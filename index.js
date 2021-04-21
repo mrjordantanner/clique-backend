@@ -1,33 +1,12 @@
 //https://github.com/davidzas/back-end-socketio/blob/master/server.js
 
-getCollection = require('./db/connection');
-
-//#region [Lime]
+//#region [Blue]
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
 const server = require('http').createServer(app);
-
 const port = process.env.PORT || 8080;
-
-var STATIC_CHANNELS = [{
-    name: 'General',
-    participants: 0,
-    id: 0,
-    sockets: []
-}, {
-    name: 'Private 1',
-    participants: 0,
-    id: 1,
-    sockets: []
-},
-{
-    name: 'Private 2',
-    participants: 0,
-    id: 2,
-    sockets: []
-}];
-
 
 app.use(cors());
 app.use(express.json());
@@ -48,6 +27,8 @@ const io = require('socket.io')(server, {
     }
 });
 
+app.set('socketio', io);
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
@@ -57,24 +38,36 @@ server.listen(port, () => {
     console.log(`server listening on *:${port}`);
 });
 
+const database = require('./db/connection'); 
+
+function getChannels() {
+    const cursor =  database.collection('channels').find();
+            return cursor.map((channel) => {
+            console.log(`Channel: ${channel.name}`)
+	});
+}
+
+
 io.on('connection', (socket) => { 
+    socket.emit('id', socket.id);     // send each client their socket id
     socket.emit('connection', null);
     socket.on('channel-join', id => {
-        STATIC_CHANNELS.forEach(c => {
-            if (c._id === id) {
-                if (c.sockets.indexOf(socket._id) == (-1)) {
-                    c.sockets.push(socket._id);
-                    c.participants = c.sockets.length;
-                    io.emit('channel', c);
-                    console.log(`Joined ${c.name} channel.`);
+
+        getChannels().forEach(channel => {
+            if (channel._id === id) {
+                if (channel.sockets.indexOf(socket._id) == (-1)) {
+                    channel.sockets.push(socket._id);
+                    channel.participants = channel.sockets.length;
+                    io.emit('channel', channel);
+                    console.log(`Joined ${channel.name} channel.`);
                 }
             } else {
-                let index = c.sockets.indexOf(socket._id);
+                let index = channel.sockets.indexOf(socket._id);
                 if (index != (-1)) {
-                    c.sockets.splice(index, 1);
-                    c.participants = c.sockets.length;
-                    io.emit('channel', c);
-                    console.log(`Left ${c.name} channel.`);
+                    channel.sockets.splice(index, 1);
+                    channel.participants = channel.sockets.length;
+                    io.emit('channel', channel);
+                    console.log(`Left ${channel.name} channel.`);
                 }
             }
         });
@@ -82,21 +75,27 @@ io.on('connection', (socket) => {
     });
 
     socket.on('send-message', message => {
-
        io.emit('message', message);
     });
 
     socket.on('disconnect', () => {
-        STATIC_CHANNELS.forEach(c => {
-            let index = c.sockets.indexOf(socket._id);
+        getChannels().forEach(channel => {
+            let index = channel.sockets.indexOf(socket._id);
             if (index != (-1)) {
-                c.sockets.splice(index, 1);
-                c.participants = c.sockets.length;
-                io.emit('channel', c);
+                channel.sockets.splice(index, 1);
+                channel.participants = channel.sockets.length;
+                io.emit('channel', cchannel);
             }
         });
     });
 });
+
+// const STATIC_CHANNELS = [{
+//     name: 'General',
+//     participants: 0,
+//     id: 1,
+//     sockets: []
+// }];
 
 // app.get('/getChannels', (req, res) => {
 //     res.json({
