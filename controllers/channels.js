@@ -6,7 +6,7 @@ const { requireToken } = require('../middleware/auth');
 // Get All Channels
 router.get('/', (req, res, next) => {
 	Channel.find()
-		.populate('messages.sender')
+		.populate('messages')  //was messages.sender
 		.then((channels) => res.json(channels))
 		.catch(next);
 });

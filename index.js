@@ -38,68 +38,57 @@ server.listen(port, () => {
     console.log(`server listening on *:${port}`);
 });
 
-const database = require('./db/connection'); 
+// const { database } = require('./db/connection'); 
 
-function getChannels() {
-    const cursor =  database.collection('channels').find();
-            return cursor.map((channel) => {
-            console.log(`Channel: ${channel.name}`)
-	});
-}
+// function getChannels() {
+//     const cursor =  database.collection('channels').find();
+//             return cursor.map((channel) => {
+//             console.log(`Channel: ${channel.name}`)
+// 	});
+// }
 
 
 io.on('connection', (socket) => { 
     socket.emit('id', socket.id);     // send each client their socket id
     socket.emit('connection', null);
+
     socket.on('channel-join', id => {
 
-        getChannels().forEach(channel => {
-            if (channel._id === id) {
-                if (channel.sockets.indexOf(socket._id) == (-1)) {
-                    channel.sockets.push(socket._id);
-                    channel.participants = channel.sockets.length;
-                    io.emit('channel', channel);
-                    console.log(`Joined ${channel.name} channel.`);
-                }
-            } else {
-                let index = channel.sockets.indexOf(socket._id);
-                if (index != (-1)) {
-                    channel.sockets.splice(index, 1);
-                    channel.participants = channel.sockets.length;
-                    io.emit('channel', channel);
-                    console.log(`Left ${channel.name} channel.`);
-                }
-            }
-        });
-        return id;
+        // getChannels().forEach(channel => {
+        //     if (channel._id === id) {
+        //         if (channel.sockets.indexOf(socket._id) == (-1)) {
+        //             channel.sockets.push(socket._id);
+        //             channel.participants = channel.sockets.length;
+        //             io.emit('channel', channel);
+        //             console.log(`Joined ${channel.name} channel.`);
+        //         }
+        //     } else {
+        //         let index = channel.sockets.indexOf(socket._id);
+        //         if (index != (-1)) {
+        //             channel.sockets.splice(index, 1);
+        //             channel.participants = channel.sockets.length;
+        //             io.emit('channel', channel);
+        //             console.log(`Left ${channel.name} channel.`);
+        //         }
+        //     }
+        // });
+        // return id;
     });
 
+    // 2) Listen for send-message event from one client and emit it to all other connected clients
     socket.on('send-message', message => {
        io.emit('message', message);
     });
 
     socket.on('disconnect', () => {
-        getChannels().forEach(channel => {
-            let index = channel.sockets.indexOf(socket._id);
-            if (index != (-1)) {
-                channel.sockets.splice(index, 1);
-                channel.participants = channel.sockets.length;
-                io.emit('channel', cchannel);
-            }
-        });
+        // getChannels().forEach(channel => {
+        //     let index = channel.sockets.indexOf(socket._id);
+        //     if (index != (-1)) {
+        //         channel.sockets.splice(index, 1);
+        //         channel.participants = channel.sockets.length;
+        //         io.emit('channel', cchannel);
+        //     }
+        // });
     });
 });
-
-// const STATIC_CHANNELS = [{
-//     name: 'General',
-//     participants: 0,
-//     id: 1,
-//     sockets: []
-// }];
-
-// app.get('/getChannels', (req, res) => {
-//     res.json({
-//         channels: STATIC_CHANNELS
-//     })
-// });
 //#endregion

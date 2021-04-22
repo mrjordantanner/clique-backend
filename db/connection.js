@@ -1,6 +1,5 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-
 const mongoURI =
 	process.env.NODE_ENV === 'production'
 		? process.env.DB_URL
@@ -11,24 +10,16 @@ let database;
 mongoose
 	.connect(mongoURI, {
 		useNewUrlParser: true,
-		useUnifiedTopology: true 
-	},
-	{
-		function (err, db) {
-		database = db;
-	}})
-	.then(() => {
+		useUnifiedTopology: true,
+	})
+	.then((instance) => {
 		console.log('mongoose connected to db.');
-		console.log(`DB ${database}`)
+		// console.log(`DB ${instance.connections[0].name}`);
+		database = instance.connections[0];
+		// console.log(`Channels collection: ${database}`);
 	})
 	.catch(() => {
 		console.log('db connection failed!');
 	});
 
-module.exports.database = database;
-module.exports = mongoose;
-
-// {
-// 	function (err, db) {
-// 	database = db;
-// }}
+module.exports = { database, mongoose };
