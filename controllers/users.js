@@ -13,6 +13,14 @@ router.get('/', (req, res, next) => {
 		.catch(next);
 });
 
+// Get One 
+router.get('/:id', (req, res, next) => {
+	const id = req.params.id;
+	User.findById(id)
+		.then((user) => res.json(user))
+		.catch(next);
+});
+
 // Sign Up
 router.post('/create', (req, res, next) => {
 	bcrypt
@@ -34,6 +42,17 @@ router.post('/login', (req, res, next) => {
 		.catch(next);
 });
 
+// router.post('/login', passport.authenticate('local'), (req, res, next) => {
+//     // If this function gets called, authentication was successful.
+//     // `req.user` contains the authenticated user.
+// 	console.log('Passport authentication successful for '+ req.user.username)
+// 	.then()
+//     // res.redirect('/users/' + req.user.username);
+
+//   });
+
+
+
 // UPDATE
 router.patch('/:id', (req, res, next) => {
 	const id = req.params.id;
@@ -50,5 +69,7 @@ router.delete('/:id', (req, res, next) => {
 		.then(() => res.sendStatus(204))
 		.catch(next);
 });
+
+
 
 module.exports = router;

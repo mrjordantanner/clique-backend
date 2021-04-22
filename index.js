@@ -77,6 +77,7 @@ io.on('connection', (socket) => {
 
     // 2) Listen for send-message event from one client and emit it to all other connected clients
     socket.on('send-message', message => {
+       console.log(`${message.messageData.sender}: ${message.messageData.text}`);
        io.emit('message', message);
     });
 
