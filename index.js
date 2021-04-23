@@ -23,17 +23,17 @@ app.use('/messages', messagesController);
 
 const io = require('socket.io')(server, {
     cors: {
-    //   origin: '*',
+      origin: '*',
     //   origin: "http://localhost:3000" || 'https://jts-clique.herokuapp.com/',
-    origin: 'https://jts-clique.herokuapp.com/'
+    // origin: 'https://jts-clique.herokuapp.com/'
     }
 });
 
 app.set('socketio', io);
 
 app.use((req, res, next) => {
-    // res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Origin', 'https://jts-clique.herokuapp.com/');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', 'https://jts-clique.herokuapp.com/');
     next();
 })
 
