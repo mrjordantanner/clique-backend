@@ -4,17 +4,17 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const cors = require('cors');
+// const cors = require('cors');
 const server = require('http').createServer(app);
 const port = process.env.PORT || 8080;
 const Channel = require('./models/Channel');
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',  'Access-Control-Allow-Origin': '*', }))
+// app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',  'Access-Control-Allow-Origin': '*', }))
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-})
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     next();
+// })
 
 
 app.use(express.json());
@@ -38,17 +38,17 @@ server.listen(port, () => {
 
 // Sockets
 const io = require('socket.io')(server, {
-    cors: {
-      origin: '*',
-      'Access-Control-Allow-Origin': '*',
-    //    origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000'
+    // cors: {
+    //   origin: '*',
+    //   'Access-Control-Allow-Origin': '*',
+    // //    origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000'
 
-        // 'headers': {
-        //     'Access-Control-Allow-Headers': '*',
-        //     'Access-Control-Allow-Origin': '*',
-        //     'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-        // },
-    }
+    //     // 'headers': {
+    //     //     'Access-Control-Allow-Headers': '*',
+    //     //     'Access-Control-Allow-Origin': '*',
+    //     //     'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+    //     // },
+    // }
 });
 
 io.on('connection', (socket) => { 
