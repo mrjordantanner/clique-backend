@@ -4,7 +4,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-// const cors = require('cors');
+const cors = require('cors');
 const server = require('http').createServer(app);
 const port = process.env.PORT || 8080;
 const Channel = require('./models/Channel');
