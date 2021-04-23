@@ -10,6 +10,13 @@ const port = process.env.PORT || 8080;
 const Channel = require('./models/Channel');
 
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',  'Access-Control-Allow-Origin': '*', }))
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+})
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -22,6 +29,14 @@ const messagesController = require('./controllers/messages');
 app.use('/messages', messagesController);
 
 
+
+// Server
+server.listen(port, () => {
+    console.log(`server listening on *:${port}`);
+});
+
+
+// Sockets
 const io = require('socket.io')(server, {
     cors: {
       origin: '*',
@@ -36,21 +51,6 @@ const io = require('socket.io')(server, {
     }
 });
 
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-})
-
-
-
-
-// Server
-server.listen(port, () => {
-    console.log(`server listening on *:${port}`);
-});
-
-
-// Sockets
 io.on('connection', (socket) => { 
     socket.emit('connection', null);
 
