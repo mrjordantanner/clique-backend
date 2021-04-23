@@ -9,7 +9,7 @@ const server = require('http').createServer(app);
 const port = process.env.PORT || 8080;
 const Channel = require('./models/Channel');
 
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000' }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,17 +25,23 @@ app.use('/messages', messagesController);
 const io = require('socket.io')(server, {
     cors: {
       origin: '*',
+      'Access-Control-Allow-Origin': '*',
     //    origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000'
+
+        'headers': {
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        },
     }
 });
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+})
 
-// app.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     next();
-// })
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000' }))
 
 
 // Server
