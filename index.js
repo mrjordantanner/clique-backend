@@ -7,6 +7,7 @@ const app = express();
 const cors = require('cors');
 const server = require('http').createServer(app);
 const port = process.env.PORT || 8080;
+const Channel = require('./models/Channel');
 
 app.use(cors());
 app.use(express.json());
@@ -49,8 +50,12 @@ server.listen(port, () => {
 
 
 io.on('connection', (socket) => { 
-    socket.emit('id', socket.id);     // send each client their socket id
     socket.emit('connection', null);
+
+    socket.on('general-channel-join', id => {
+        socket.emit('connection-general', null);
+        console.log('Joined General channel.');
+    })
 
     socket.on('channel-join', id => {
 
@@ -87,7 +92,7 @@ io.on('connection', (socket) => {
         //     if (index != (-1)) {
         //         channel.sockets.splice(index, 1);
         //         channel.participants = channel.sockets.length;
-        //         io.emit('channel', cchannel);
+        //         io.emit('channel', channel);
         //     }
         // });
     });

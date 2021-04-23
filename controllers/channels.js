@@ -11,10 +11,18 @@ router.get('/', (req, res, next) => {
 		.catch(next);
 });
 
-// Get One Channel
-router.get('/:id', (req, res, next) => {
+// Get One Channel by id
+router.get('/id/:id', (req, res, next) => {
 	const id = req.params.id;
 	Channel.findById(id)
+		.then((channel) => res.json(channel))
+		.catch(next);
+});
+
+// Get One Channel by name
+router.get('/name/:name', (req, res, next) => {
+	const name = req.params.name;
+	Channel.findOne( { 'name': name } )
 		.then((channel) => res.json(channel))
 		.catch(next);
 });

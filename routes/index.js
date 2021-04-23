@@ -1,37 +1,37 @@
-var express = require('express');
-var router = express.Router();
+// var express = require('express');
+// var router = express.Router();
 
-// var Lab = require('../models/labs');
+// // var Lab = require('../models/labs');
 
-/* GET home page. */
-router.get('/', ensureAuthenticated, function(req, res) {
-    if (req.user && req.user.role==='student'){
-            Lab.find().sort('-_id')
-                .then(function (doc) {
-                res.render('indexStudent', { name: req.user.name, items: doc});
-        });
+// /* GET home page. */
+// router.get('/', ensureAuthenticated, function(req, res) {
+//     if (req.user && req.user.role==='student'){
+//             Lab.find().sort('-_id')
+//                 .then(function (doc) {
+//                 res.render('indexStudent', { name: req.user.name, items: doc});
+//         });
 
-} else if (req.user && req.user.role==='teacher'){
-            Lab.find().sort('-_id')
-                    .then(function (doc) {
-                    res.render('indexTeacher', { name: req.user.name, items: doc});
-    });
-}
+// } else if (req.user && req.user.role==='teacher'){
+//             Lab.find().sort('-_id')
+//                     .then(function (doc) {
+//                     res.render('indexTeacher', { name: req.user.name, items: doc});
+//     });
+// }
 
-else if (req.user && req.user.role==='admin'){
-            Lab.find().sort('-_id')
-                .then(function (doc) {
-                res.render('indexAdmin', { name: req.user.name, items: doc, n: 0});
-            });
-    }
-});
+// else if (req.user && req.user.role==='admin'){
+//             Lab.find().sort('-_id')
+//                 .then(function (doc) {
+//                 res.render('indexAdmin', { name: req.user.name, items: doc, n: 0});
+//             });
+//     }
+// });
 
 
-// https://github.com/iLabs-Makerere/OpenLabs-Node.js/blob/master/routes/index.js
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
-    else{
-        res.redirect('/login')
-    }
-}
+// // https://github.com/iLabs-Makerere/OpenLabs-Node.js/blob/master/routes/index.js
+// function ensureAuthenticated(req, res, next) {
+//     if (req.isAuthenticated())
+//         return next();
+//     else{
+//         res.redirect('/login')
+//     }
+// }
