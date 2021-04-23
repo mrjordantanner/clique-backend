@@ -28,11 +28,11 @@ const io = require('socket.io')(server, {
       'Access-Control-Allow-Origin': '*',
     //    origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000'
 
-        'headers': {
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-        },
+        // 'headers': {
+        //     'Access-Control-Allow-Headers': '*',
+        //     'Access-Control-Allow-Origin': '*',
+        //     'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+        // },
     }
 });
 
