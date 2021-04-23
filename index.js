@@ -23,13 +23,15 @@ app.use('/messages', messagesController);
 
 app.options('*', cors());
 
-const io = require('socket.io')(server, {
-    cors: {
-      origin: '*',
-    //   origin: "http://localhost:3000" || 'https://jts-clique.herokuapp.com/',
-    // origin: 'https://jts-clique.herokuapp.com/'
-    }
-});
+// const io = require('socket.io')(server, {
+//     cors: {
+//       origin: '*',
+//     //   origin: "http://localhost:3000" || 'https://jts-clique.herokuapp.com/',
+//     // origin: 'https://jts-clique.herokuapp.com/'
+//     }
+// });
+
+const io = require('socket.io')(server);
 
 app.set('socketio', io);
 
