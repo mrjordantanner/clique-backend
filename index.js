@@ -9,7 +9,7 @@ const server = require('http').createServer(app);
 const port = process.env.PORT || 8080;
 const Channel = require('./models/Channel');
 
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000' }))
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',  'Access-Control-Allow-Origin': '*', }))
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
