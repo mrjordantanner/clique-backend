@@ -31,7 +31,8 @@ const io = require('socket.io')(server, {
 app.set('socketio', io);
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', 'https://jts-clique.herokuapp.com/');
     next();
 })
 
