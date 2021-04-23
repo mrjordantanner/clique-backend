@@ -9,16 +9,16 @@ const server = require('http').createServer(app);
 const port = process.env.PORT || 8080;
 const Channel = require('./models/Channel');
 
-app.use(cors({ 
-    origin: 'https://jts-clique.herokuapp.com/'}))
+// app.use(cors({ 
+//     origin: 'https://jts-clique.herokuapp.com/'}))
 
 // app.use(cors({ 
 //     origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',        'Access-Control-Allow-Origin': '*', }))
 
-// app.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     next();
-// })
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+})
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
