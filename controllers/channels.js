@@ -3,9 +3,10 @@ const router = express.Router();
 const Channel = require('./../models/Channel');
 const { requireToken } = require('../middleware/auth');
 
-// Get All Channels
+// Get All Channels except General 
 router.get('/', (req, res, next) => {
-	Channel.find()
+	// Channel.find()
+	Channel.find( { '_id': { $ne: '001' } } )
 		.populate('messages')  //was messages.sender
 		.then((channels) => res.json(channels))
 		.catch(next);
@@ -15,6 +16,14 @@ router.get('/', (req, res, next) => {
 router.get('/id/:id', (req, res, next) => {
 	const id = req.params.id;
 	Channel.findById(id)
+		.then((channel) => res.json(channel))
+		.catch(next);
+});
+
+// Get General channel by id ('001')
+router.get('/general', (req, res, next) => {
+	const generalId = '001';
+	Channel.findById(generalId)
 		.then((channel) => res.json(channel))
 		.catch(next);
 });

@@ -5,7 +5,6 @@ const { requireToken } = require('../middleware/auth');
 
 // require channel model
 const Channel = require('./../models/Channel');
-const General = require('./../models/General');
 
 // Channel
 // POST /messages/
@@ -31,7 +30,7 @@ router.post('/', requireToken, (req, res, next) => {
 // POST /messages/
 router.post('/general', requireToken, (req, res, next) => {
 	const messageData = req.body;
-	General.findOne( { 'name': 'General' } )
+	Channel.findById('001')
 		.then((channel) => {
 			channel.messages.push(messageData);
 			return channel.save();

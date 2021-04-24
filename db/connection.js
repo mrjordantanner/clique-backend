@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 const mongoURI =
 	process.env.NODE_ENV === 'production'
 		? process.env.DB_URL

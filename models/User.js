@@ -10,6 +10,15 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		loggedIn: {
+			type: Boolean,
+			default: false,
+			required: false,
+		},
+		channel: {
+			type: String,
+			required: false,
+		}
 	},
 	{
 		timestamps: true,
