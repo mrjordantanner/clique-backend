@@ -7,7 +7,6 @@ const app = express();
 const cors = require('cors');
 const server = require('http').createServer(app);
 const port = process.env.PORT || 8080;
-const Channel = require('./models/Channel');
 
 // app.use(cors({ 
 //     origin: 'https://jts-clique.herokuapp.com/',
@@ -34,6 +33,8 @@ const channelsController = require('./controllers/channels');
 app.use('/channels', channelsController);
 const messagesController = require('./controllers/messages');
 app.use('/messages', messagesController);
+const generalController = require('./controllers/general');
+app.use('/general', generalController);
 
 // Server
 server.listen(port, () => {
