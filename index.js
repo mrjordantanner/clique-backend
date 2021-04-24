@@ -69,11 +69,17 @@ io.on('connection', (socket) => {
         // TODO: add join/leave code here - use socket.io rooms?
     });
 
-    // 2) Listen for send-message event from one client and emit it to all other connected clients
-    socket.on('send-message', message => {
+    // 2A) Listen for send-message event from one client and emit it to all other connected clients
+    socket.on('send-message-channel', message => {
        console.log(`${message.messageData.sender}: ${message.messageData.text}`);
-       io.emit('message', message);
+       io.emit('channel-message', message);
     });
+
+    // 2B Listen for send-message event from one client and emit it to all other connected clients
+    socket.on('send-message-general', message => {
+        console.log(`${message.messageData.sender}: ${message.messageData.text}`);
+        io.emit('general-message', message);
+        });
 
     socket.on('disconnect', () => {
 
@@ -82,61 +88,3 @@ io.on('connection', (socket) => {
     });
 });
 //#endregion
-
-
-// Jen's code
-
-// const express = require('express')
-// const mongoose = require('mongoose')
-// const cors = require('cors')
-
-// const messageRoutes = require('./app/routes/message_routes')
-// const userRoutes = require('./app/routes/user_routes')
-
-// const errorHandler = require('./lib/error_handler')
-
-// const db = require('./config/db')
-
-// const auth = require('./lib/auth')
-
-// mongoose.Promise = global.Promise
-
-// mongoose.connect(db, { useMongoClient: true })
-
-// const app = express()
-
-// app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:7165' }))
-
-// const port = process.env.PORT || 4741
-
-// app.use((req, res, next) => {
-//   if (req.headers.authorization) {
-//     const auth = req.headers.authorization
-//     req.headers.authorization = auth.replace('Token token=', 'Bearer ')
-//   }
-//   next()
-// })
-
-// app.use(auth)
-
-// app.use(express.json())
-// app.use(express.urlencoded({extended: true}))
-
-// app.use(messageRoutes)
-// app.use(userRoutes)
-
-// app.use(errorHandler)
-
-// const server = app.listen(port, () => {
-//   console.log('connected to port: ' + port)
-// })
-
-// const io = require('socket.io')(server)
-
-// app.set('socketio', io)
-
-// io.on('connect', socket => {
-//   socket.emit('id', socket.id)
-// })
-
-// module.exports = app
