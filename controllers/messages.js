@@ -8,21 +8,17 @@ const Channel = require('./../models/Channel');
 
 // Channel
 // POST /messages/
-// router.post('/channel', requireToken, (req, res, next) => {
 router.post('/', requireToken, (req, res, next) => {
-	// get the message data from the body of the request
 	const messageData = req.body;
-	// get the channel id from the body
 	const channelId = messageData.channelId;
-	// find the channel by its id
+	// const channelId = req.params.id;
+	console.log(`Sending message to: ${channelId}`);
 	Channel.findById(channelId)
 		.then((channel) => {
-			// add message to channel
+			console.log(`Attempt to push ${messageData.text} into channel: ${channel.name}`);
 			channel.messages.push(messageData);
-			// save channel
 			return channel.save();
 		})
-		// send response back to client
 		.then((channel) => res.status(201).json({ channel: channel }))
 		.catch(next);
 

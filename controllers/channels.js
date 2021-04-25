@@ -3,11 +3,11 @@ const router = express.Router();
 const Channel = require('./../models/Channel');
 const { requireToken } = require('../middleware/auth');
 
-// Get All Channels except General 
+// Get All Channels 
 router.get('/', (req, res, next) => {
-	// Channel.find()
-	Channel.find( { '_id': { $ne: '001' } } )
-		.populate('messages')  //was messages.sender
+	Channel.find()
+	// Channel.find( { '_id': { $ne: '001' } } )
+		.populate('messages')  //  exclude General 
 		.then((channels) => res.json(channels))
 		.catch(next);
 });

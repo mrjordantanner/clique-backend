@@ -67,17 +67,11 @@ io.on('connection', (socket) => {
         // TODO: add join/leave code here - use socket.io rooms?
     });
 
-    // 2A) Listen for send-message event from one client and emit it to all other connected clients
-    socket.on('send-message-channel', message => {
+    // 2) Listen for send-message event from one client and emit it to all other connected clients
+    socket.on('send-message', message => {
        console.log(`${message.messageData.sender}: ${message.messageData.text}`);
-       io.emit('channel-message', message);
+       io.emit('message', message);
     });
-
-    // 2B Listen for send-message event from one client and emit it to all other connected clients
-    socket.on('send-message-general', message => {
-        console.log(`${message.messageData.sender}: ${message.messageData.text}`);
-        io.emit('general-message', message);
-        });
 
     socket.on('disconnect', () => {
 
@@ -86,3 +80,8 @@ io.on('connection', (socket) => {
     });
 });
 //#endregion
+
+
+
+
+

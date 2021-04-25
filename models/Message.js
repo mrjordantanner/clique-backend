@@ -16,7 +16,7 @@ const MessageSchema = new mongoose.Schema(
 		},
 		socketId: {
 			type: String,
-			required: true,
+			required: false,
 		}
 	},
 	{
