@@ -16,7 +16,6 @@ router.post('/', requireToken, (req, res, next) => {
 	const channelId = messageData.channelId;
 	Channel.findById(channelId)
 		.then((channel) => {
-			console.log(`Attempt to push ${messageData.text} into channel: ${channel.name}`);
 			channel.messages.push(messageData);
 			return channel.save();
 		})
@@ -31,7 +30,6 @@ router.post('/general', requireToken, (req, res, next) => {
 	const name = 'General';
 	General.findOne( { 'name': name } )
 		.then((channel) => {
-			console.log(`Attempt to push ${messageData.text} into channel: ${channel.name}`);
 			channel.messages.push(messageData);
 			return channel.save();
 		})
