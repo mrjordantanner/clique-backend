@@ -1,12 +1,12 @@
 const { mongoose } = require('../db/connection');
 const MessageSchema = require('./Message');
 
-const ChannelSchema = new mongoose.Schema(
+const GeneralSchema = new mongoose.Schema(
 	{
-		_id: {
-			type: String,
-			required: true,
-		},
+		// _id: {
+		// 	type: String,
+		// 	required: false,
+		// },
 		name: {
 			type: String,
 			required: true,
@@ -22,4 +22,4 @@ const ChannelSchema = new mongoose.Schema(
 	}
 );
 
-module.exports = mongoose.model('Channel', ChannelSchema);
+module.exports = mongoose.model('General', GeneralSchema);

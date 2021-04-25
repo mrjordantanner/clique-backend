@@ -13,17 +13,9 @@ router.get('/', (req, res, next) => {
 });
 
 // Get One Channel by id
-router.get('/id/:id', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
 	const id = req.params.id;
 	Channel.findById(id)
-		.then((channel) => res.json(channel))
-		.catch(next);
-});
-
-// Get General channel by id ('001')
-router.get('/general', (req, res, next) => {
-	const generalId = '001';
-	Channel.findById(generalId)
 		.then((channel) => res.json(channel))
 		.catch(next);
 });

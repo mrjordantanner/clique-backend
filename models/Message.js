@@ -4,17 +4,13 @@ const MessageSchema = new mongoose.Schema(
 	{
 		text: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		sender: {
 			type: String,
 			required: true,
 		},
 		channelId: {
-			type: String,
-			required: true,
-		},
-		socketId: {
 			type: String,
 			required: false,
 		}
