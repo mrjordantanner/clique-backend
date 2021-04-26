@@ -8,8 +8,6 @@ const cors = require('cors');
 const server = require('http').createServer(app);
 const port = process.env.PORT || 8080;
 
-const Message = require('./models/Message');
-
 app.use(cors());
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*',);
@@ -44,7 +42,6 @@ io.on('connection', (socket) => {
 
     // Listen for send-message event from one client and emit it to all other connected clients
     socket.on('send-message', message => {
-       console.log(`${message.messageData.channel} / ${message.messageData.sender}: ${message.messageData.text}`);
        io.emit('push', message);
     });
 
