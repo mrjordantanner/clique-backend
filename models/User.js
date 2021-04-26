@@ -19,7 +19,11 @@ const UserSchema = new mongoose.Schema(
 		channel: {
 			type: String,
 			required: false,
-		}
+		},
+		// clicks: {
+		// 	type: Number,
+		// 	required: false,
+		// }
 	},
 	{
 		timestamps: true,
