@@ -13,9 +13,6 @@ mongoose
 	})
 	.then((instance) => {
 		console.log('mongoose connected to db.');
-		// console.log(`DB ${instance.connections[0].name}`);
-		// database = instance.connections[0];
-		// console.log(`Channels collection: ${database}`);
 	})
 	.catch(() => {
 		console.log('db connection failed!');

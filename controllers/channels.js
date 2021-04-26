@@ -20,13 +20,13 @@ router.get('/:id', (req, res, next) => {
 		.catch(next);
 });
 
-// Get One Channel by name
-router.get('/name/:name', (req, res, next) => {
-	const name = req.params.name;
-	Channel.findOne( { 'name': name } )
-		.then((channel) => res.json(channel))
-		.catch(next);
-});
+// // Get One Channel by name
+// router.get('/name/:name', (req, res, next) => {
+// 	const name = req.params.name;
+// 	Channel.findOne( { 'name': name } )
+// 		.then((channel) => res.json(channel))
+// 		.catch(next);
+// });
 
 // Create Channel
 router.post('/', requireToken, (req, res, next) => {
