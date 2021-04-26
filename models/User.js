@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema(
 		name: {
 			type: String,
 			required: true,
+			unique: true
 		},
 		password: {
 			type: String,
@@ -18,7 +19,11 @@ const UserSchema = new mongoose.Schema(
 		channel: {
 			type: String,
 			required: false,
-		}
+		},
+		// clicks: {
+		// 	type: Number,
+		// 	required: false,
+		// }
 	},
 	{
 		timestamps: true,
