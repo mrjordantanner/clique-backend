@@ -12,7 +12,9 @@ router.get('/', (req, res, next) => {
 });
 
 // Create Channel
-router.post('/', requireToken, (req, res, next) => {
+router.post('/', 
+// requireToken, 
+(req, res, next) => {
 	const channelData = req.body;
 	General.create(channelData)
 		.then((channel) => res.status(201).json(channel))

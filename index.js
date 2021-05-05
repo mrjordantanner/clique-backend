@@ -23,6 +23,8 @@ const channelsController = require('./controllers/channels');
 app.use('/channels', channelsController);
 const messagesController = require('./controllers/messages');
 app.use('/messages', messagesController);
+const channelSlotsController = require('./controllers/channelSlots');
+app.use('/channelSlots', channelSlotsController);
 const generalController = require('./controllers/general');
 app.use('/general', generalController);
 

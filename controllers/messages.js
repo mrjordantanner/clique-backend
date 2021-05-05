@@ -11,7 +11,9 @@ const General = require('./../models/General');
 // Channel
 // Send message to channel specified by channelId in the message data
 // /messages
-router.post('/', requireToken, (req, res, next) => {
+router.post('/', 
+// requireToken, 
+(req, res, next) => {
 	const messageData = req.body;
 	const channelId = messageData.channelId;
 	Channel.findById(channelId)
@@ -25,7 +27,9 @@ router.post('/', requireToken, (req, res, next) => {
 
 // Send message to general chat
 // /messages/general
-router.post('/general', requireToken, (req, res, next) => {
+router.post('/general', 
+// requireToken, 
+(req, res, next) => {
 	const messageData = req.body;
 	const name = 'General';
 	General.findOne( { 'name': name } )
@@ -38,34 +42,38 @@ router.post('/general', requireToken, (req, res, next) => {
 	});
 
 
-// DELETE a message    /messages/:id
-// router.delete('/:id', requireToken, (req, res, next) => {
-// 	const id = req.params.id;
-// 	Channel.findOne({ 'messages._id': id })
-// 		.then((channel) => {
-// 			channel.messages.id(id).remove();
-// 			return channel.save();
-// 		})
-// 		.then(() => res.sendStatus(204))
-// 		.catch(next);
-// });
+// DELETE a message    
+// /messages/:id
+router.delete('/:id', 
+// requireToken, 
+(req, res, next) => {
+	const id = req.params.id;
+	Channel.findOne({ 'messages._id': id })
+		.then((channel) => {
+			channel.messages.id(id).remove();
+			return channel.save();
+		})
+		.then(() => res.sendStatus(204))
+		.catch(next);
+});
 
-// // UPDATE a message
-// // PATCH /messages/:id
-// router.patch('/:id', requireToken, (req, res, next) => {
-// 	const id = req.params.id;
-// 	const messageData = req.body;
-
-// 	Channel.findOne({
-// 		'messages._id': id,
-// 	})
-// 		.then((channel) => {
-// 			const message = channel.messages.id(id);
-// 			message.set(messageData);
-// 			return channel.save();
-// 		})
-// 		.then(() => res.sendStatus(204))
-// 		.catch(next);
-// });
+// UPDATE a message
+// /messages/:id
+router.patch('/:id', 
+// requireToken, 
+(req, res, next) => {
+	const id = req.params.id;
+	const messageData = req.body;
+	Channel.findOne({
+		'messages._id': id,
+	})
+		.then((channel) => {
+			const message = channel.messages.id(id);
+			message.set(messageData);
+			return channel.save();
+		})
+		.then(() => res.sendStatus(204))
+		.catch(next);
+});
 
 module.exports = router;

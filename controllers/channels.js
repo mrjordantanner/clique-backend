@@ -29,7 +29,9 @@ router.get('/:id', (req, res, next) => {
 // });
 
 // Create Channel
-router.post('/', requireToken, (req, res, next) => {
+router.post('/', 
+// requireToken, 
+(req, res, next) => {
 	const channelData = req.body;
 	Channel.create(channelData)
 		.then((channel) => res.status(201).json(channel))
@@ -37,7 +39,9 @@ router.post('/', requireToken, (req, res, next) => {
 });
 
 // Update Channel
-router.patch('/:id', requireToken, (req, res, next) => {
+router.patch('/:id', 
+// requireToken, 
+(req, res, next) => {
 	const id = req.params.id;
 	const channelData = req.body;
 	Channel.findOneAndUpdate({ _id: id }, channelData, { new: true })
@@ -46,7 +50,9 @@ router.patch('/:id', requireToken, (req, res, next) => {
 });
 
 // Delete Channel
-router.delete('/:id', requireToken, (req, res, next) => {
+router.delete('/:id', 
+// requireToken, 
+(req, res, next) => {
 	const id = req.params.id;
 	Channel.findOneAndDelete({ _id: id })
 		.then(() => res.sendStatus(204))

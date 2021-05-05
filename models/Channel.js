@@ -1,5 +1,6 @@
 const { mongoose } = require('../db/connection');
 const MessageSchema = require('./Message');
+const ChannelSlotSchema = require('./ChannelSlot');
 
 const ChannelSchema = new mongoose.Schema(
 	{
@@ -15,6 +16,7 @@ const ChannelSchema = new mongoose.Schema(
 			type: Array,
 			required: false,
 		},
+		channelSlots: [ChannelSlotSchema],
 		messages: [MessageSchema],
 	},
 	{
