@@ -1,4 +1,5 @@
 const {mongoose} = require('../db/connection');
+const WidgetSchema = require('./Widget');
 
 const UserSchema = new mongoose.Schema(
 	{
@@ -11,6 +12,11 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		token: {
+			type: String,
+			required: false,
+			default: null,
+		},
 		loggedIn: {
 			type: Boolean,
 			default: false,
@@ -19,11 +25,14 @@ const UserSchema = new mongoose.Schema(
 		channel: {
 			type: String,
 			required: false,
+			default: null,
 		},
-		// clicks: {
-		// 	type: Number,
-		// 	required: false,
-		// }
+		xp: {
+			type: Number,
+			required: false,
+			default: 0
+		},
+		widgets: [WidgetSchema],
 	},
 	{
 		timestamps: true,

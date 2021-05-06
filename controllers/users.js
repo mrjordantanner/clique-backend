@@ -22,13 +22,22 @@ router.get('/loggedIn', (req, res, next) => {
 		.catch(next);
 });
 
-// Get One 
+// Get One by id
 router.get('/:id', (req, res, next) => {
 	const id = req.params.id;
 	User.findById(id)
 		.then((user) => res.json(user))
 		.catch(next);
 });
+
+// Get One by name
+router.get('/name/:name', (req, res, next) => {
+	User.findOne({ name: req.params.name })
+		.then((user) => res.status(201).json(user))
+		.catch(next);
+});
+
+
 
 // Sign Up
 router.post('/create', (req, res, next) => {
@@ -45,6 +54,7 @@ router.post('/create', (req, res, next) => {
 
 // Log In
 router.post('/login', (req, res, next) => {
+	// Find user, create and return auth token
 	User.findOne({ name: req.body.name })
 		.then((user) => createUserToken(req, user))
 		.then((token) => res.json({ token }))
@@ -74,35 +84,25 @@ router.patch('/:id', (req, res, next) => {
 });
 
 // UPDATE by Name
-router.patch('/:name', (req, res, next) => {
-	const name = req.params.id;
+router.patch('/name/:name', (req, res, next) => {
+	const name = req.params.name;
 	const userData = req.body;
 	User.findOneAndUpdate(( { 'name': name } ), userData, { new: true })
 		.then((user) => res.json(user))
 		.catch(next);
 });
 
-// MARK AS LOGGED IN by Name
-router.patch('/login/:name', (req, res, next) => {
-	const name = req.params.name;
-	User.findOneAndUpdate(( { 'name': name } ), { loggedIn: true }, { new: true })
-		.then((user) => res.json(user))
-		.then(console.log(`${req.params.name} marked as LOGGED IN`))
-		.catch(next);
-});
 
-// MARK AS LOGGED OUT by Name
+// Log Out by Name
 router.patch('/logout/:name', (req, res, next) => {
 	const name = req.params.name;
-	User.findOneAndUpdate(( { 'name': name } ), { loggedIn: false }, { new: true })
+	User.findOneAndUpdate(( { 'name': name } ), { loggedIn: false, token: null }, { new: true })
 		.then((user) => res.json(user))
 		.then(console.log(`${req.params.name} marked as LOGGED OUT`))
 		.catch(next);
 });
 
-
-
-// Delete
+// Delete by ID
 router.delete('/:id', (req, res, next) => {
 	const id = req.params.id;
 	User.findOneAndDelete({ _id: id })
@@ -110,6 +110,13 @@ router.delete('/:id', (req, res, next) => {
 		.catch(next);
 });
 
+// Delete by Name
+router.delete('/name/:name', (req, res, next) => {
+	const name = req.params.name;
+	User.findOneAndDelete({ 'name': name })
+		.then(() => res.sendStatus(204))
+		.catch(next);
+});
 
 
 module.exports = router;
